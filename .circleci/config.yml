@@ -6,10 +6,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run:  |
-          bash:
-             mkdir /usr/src/app
-             cp index.js /usr/src/app
+      - run: mkdir /usr/src/app && cp index.js /usr/src/app
          
       - restore_cache:
           keys:
