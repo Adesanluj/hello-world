@@ -17,7 +17,15 @@ jobs:
           root: /usr/src/app
           # Must be relative path from root
           paths:
-            - /usr/src/app   
+            - /usr/src/app   #workflows:
+
+version: 2
+  one_and_one:
+      jobs:
+      - one        
+        
+        
+
  
 
 
