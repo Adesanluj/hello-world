@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run:  |
-          command:
+          bash:
              mkdir /usr/src/app
              cp index.js /usr/src/app
          
