@@ -3,8 +3,7 @@ jobs:
   one:
     docker:
       - image: circleci/node:8.11.3
-      - run: git config --global url."git@github.com:".insteadOf "https://github.com/"
-    working_directory: /usr/src/app
+    working_directory: ~/repo
     steps:
       - checkout
       - run: echo "A first hello"
