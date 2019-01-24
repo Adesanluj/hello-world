@@ -6,7 +6,6 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - set_remote_docker
       - run:  |
           command:
              mkdir /usr/src/app
