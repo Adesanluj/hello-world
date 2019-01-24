@@ -6,6 +6,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - run: whoami
       - run: mkdir -p /usr/src/app && cp index.js /usr/src/app
          
       - restore_cache:
