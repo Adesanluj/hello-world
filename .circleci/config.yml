@@ -7,7 +7,8 @@ jobs:
     steps:
       - checkout
       - run: whoami
-      - run: mkdir -p /tmp/src/app && cp index.js /tmp/src/app
+      - run: ls -al
+      #- run: mkdir -p /tmp/src/app && cp index.js /tmp/src/app
       - run:
           name: Build application Docker image
           command: |
