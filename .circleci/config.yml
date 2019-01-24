@@ -6,8 +6,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
-      - run: apt-get install sudo -y
-      - run: sudo mkdir /usr/src/app && cp index.js /usr/src/app
+      - run: mkdir -p /usr/src/app && cp index.js /usr/src/app
          
       - restore_cache:
           keys:
