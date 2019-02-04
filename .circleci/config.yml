@@ -1,76 +1,52 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
 version: 2
 jobs:
   build:
     docker:
-      - image: circleci/node:8.11.3
-    working_directory: ~
+      # Image tool container
+      - image: ${ECR_REPOSITORY}/${ECR_REPO_NAME}:image-tools-circleci
     steps:
       - checkout
-      - run: whoami
-      - run: ls -al
-      #- run: mkdir -p /tmp/src/app && cp index.js /tmp/src/app - run:
+      - setup_remote_docker
       - run:
-          name: Install dependencies
+          name: Build docker image
           command: |
-              sudo apt update
-              sudo apt-get install \
-                   apt-transport-https \
-                   ca-certificates \
-                   curl \
-                   gnupg2 \
-                   software-properties-common
-              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -  
-              sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
-              sudo apt update
-              sudo apt-cache policy docker-ce
-              sudo apt-get install docker-ce  
-              
+              docker build -t $IMAGE_CONTAINER .
       - run:
-          name: Build application Docker image
+          name: Authenticate and push image to ecr
           command: |
-            #service docker restart
-            docker build -t app .
-    
-     
+              $(aws ecr get-login --region eu-west-1 --no-include-email)
+              if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+                 docker tag $IMAGE_CONTAINER:latest ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world
+                 docker push ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world
+              fi
+  deploy_to_dev:
+    docker:
+      - image: ${ECR_REPOSITORY}/${ECR_REPO_NAME}:image-tools-circleci
+    environment:
+      AWS_DEFAULT_OUTPUT: json
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Deploy to the cluster
+          command: |
+              $(aws ecr get-login --region eu-west-1 --no-include-email)
+              setup-kube-auth
+              kubectl config use-context development
+              ./deploy_dev.sh
+workflows:
+  version: 2
+  build-push-deploy:
+    jobs:
+      - build
+      - deploy_to_dev:
+          requires:
+             - build
+          filters:
+            branches:
+              only: develop
 
-
-#version: 2
-#jobs:
-#  one:
-#    docker:
-#      - image: circleci/ruby:2.4.1
-#    steps:
-#      - checkout
-#      - run: echo "A first hello"
-#      - run: mkdir -p my_workspace
-#      - run: echo "Trying out workspaces" > my_workspace/echo-output
-#      - persist_to_workspace:
-#          # Must be an absolute path, or relative path from working_directory
-#          root: my_workspace
-#          # Must be relative path from root
-#          paths:
-#            - echo-output      
-#  two:
-#    docker:
-#      - image: circleci/ruby:2.4.1
-#    steps:
-#      - checkout
-#      - run: echo "A more familiar hi"  
-#      - attach_workspace:
-#          # Must be absolute path or relative path from working_directory
-#          at: my_workspace
-#
-#      - run: |
-#          if [[ $(cat my_workspace/echo-output) == "Trying out workspaces" ]]; then
-#            echo "It worked!";
-#          else
-#            echo "Nope!"; exit 1
-#          fi
-#workflows:
-#  version: 2
-#  one_and_two:
-#    jobs:
-#      - one
-#      - two:
-#          requires:
-#            - one

@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: cica-hello-world-service-circleci
+  labels:
+    app: cica-hello-world-service-circleci
+spec:
+  ports:
+  - port: 3010
+    name: http
+    targetPort: 3010
+  selector:
+    app: cica-hello-world-circleci
