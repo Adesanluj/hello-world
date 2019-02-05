@@ -19,7 +19,7 @@ jobs:
           name: Authenticate and push image to ecr
           command: |
               $(aws ecr get-login --region $AWS_REGION --no-include-email)
-              if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+              if [ "${CIRCLE_BRANCH}" == "master" ]; then
                  docker tag $IMAGE_CONTAINER:latest ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world
                  docker push ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world
               fi
