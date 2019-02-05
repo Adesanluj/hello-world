@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: cica-hello-word
-        image: 926803513772.dkr.ecr.eu-west-1.amazonaws.com/cica/cicadevelopment:circleci-hello-world2
+        image: 926803513772.dkr.ecr.eu-west-1.amazonaws.com/cica/cicadevelopment:circleci-hello-world1
         ports:
         - containerPort: 3010
