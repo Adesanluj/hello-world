@@ -37,7 +37,7 @@ jobs:
               $(aws ecr get-login --region eu-west-1 --no-include-email)
               setup-kube-auth
               kubectl config use-context development
-              ./deploy_dev.sh
+              ./deploy.sh
 workflows:
   version: 2
   build-push-deploy:
