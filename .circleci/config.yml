@@ -42,9 +42,9 @@ workflows:
   version: 2
   build-push-deploy:
     jobs:
-      - build:
-          type: approval          
+      - build        
       - deploy_to_dev:
+          type: approval
           requires:
              - build
           filters:
