@@ -20,8 +20,8 @@ jobs:
           command: |
               $(aws ecr get-login --region $AWS_REGION --no-include-email)
               if [ "${CIRCLE_BRANCH}" == "master" ]; then
-                 docker tag $IMAGE_CONTAINER:latest ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world
-                 docker push ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world
+                 docker tag $IMAGE_CONTAINER:latest ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world1
+                 docker push ${ECR_REPOSITORY}/${ECR_REPO_NAME}:circleci-hello-world1
               fi
   deploy_to_dev:
     docker:
